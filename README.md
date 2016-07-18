@@ -72,11 +72,12 @@ Now, after deployment is finished, we have MongoDB container running on the spec
 What's left is to provide the MongoDB details to our Node.js project service. First, list the currentlly available environment variables, then provide MONGO_URL environment variable to project-service
 
 	oc env pods --all --list
-	oc set env dc/project-service MONGO_URL='mongodb://admin:secret@172.30.120.32:27017/mongo_db' 
+	oc set env dc/project-service MONGO_URL='mongodb://admin:secret@172.30.138.160:27017/mongo_db' 
 
 Enjoy!
 
 Created by [@sauliuz](https://twitter.com/sauliuz)
+
 [More Node.js examples on OpenShift](https://github.com/openshift/nodejs-ex)
 
 

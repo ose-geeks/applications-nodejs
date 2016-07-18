@@ -5,7 +5,7 @@
   "metadata": {
     "name": "project-service",
     "annotations": {
-      "description": "An example Node.js microservice application with a MongoDB database",
+      "description": "Node.js service with REST API for projects",
       "tags": "quickstart,nodejs,mongodb",
       "iconClass": "icon-nodejs"
     }
@@ -83,8 +83,8 @@
           "sourceStrategy": {
             "from": {
               "kind": "ImageStreamTag",
-              //"namespace": "${NAMESPACE}",
-              "name": "node:argon"
+              "namespace": "${NAMESPACE}",
+              "name": "centos7-s2i-nodejs:latest"
             },
             "env":  [
               {
@@ -203,7 +203,7 @@
                   "timeoutSeconds": 3,
                   "initialDelaySeconds": 3,
                   "httpGet": {
-                    "path": "/info",
+                    "path": "/",
                     "port": 8080
                   }
                 },
@@ -211,7 +211,7 @@
                     "timeoutSeconds": 3,
                     "initialDelaySeconds": 30,
                     "httpGet": {
-                        "path": "/info",
+                        "path": "/",
                         "port": 8080
                     }
                 },
@@ -272,7 +272,7 @@
               "from": {
                 "kind": "ImageStreamTag",
                 "namespace": "${NAMESPACE}",
-                "name": "mongodb:3.2"
+                "name": "mongodb:latest"
               }
             }
           },
@@ -409,7 +409,7 @@
       "name": "APPLICATION_DOMAIN",
       "displayName": "Application Hostname",
       "description": "The exposed hostname that will route to the Node.js service, if left blank a value will be defaulted.",
-      "value": ""
+      "value": "project.service.10.2.2.2.xip.io"
     },
     {
       "name": "GITHUB_WEBHOOK_SECRET",
