@@ -144,7 +144,7 @@
             "imageChangeParams": {
               "automatic": true,
               "containerNames": [
-                "nodejs-example"
+                "project-service"
               ],
               "from": {
                 "kind": "ImageStreamTag",
@@ -170,7 +170,7 @@
           "spec": {
             "containers": [
               {
-                "name": "project-service-nodejs",
+                "name": "project-service",
                 "image": " ",
                 "ports": [
                   {
@@ -238,7 +238,7 @@
       "displayName": "Name",
       "description": "The name assigned to all of the frontend objects defined in this template.",
       "required": true,
-      "value": "project-service-nodejs"
+      "value": "project-service"
     },
     {
       "name": "NAMESPACE",

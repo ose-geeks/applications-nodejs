@@ -1,37 +1,67 @@
 ## Summary
 
-This repo contains example Node.js microservice application which can be deployed on OpenShift container platfrom or as standalone Node.js application.
+This repo contains example Node.js microservice application which can be deployed on OpenShift container platfrom or as a standalone Node.js application.
 
-This readme file has detailed instructions how to deploy and run the application
+This readme file has simple tutorial for deploy and runing the Node.js service application from this repo
+
 
 ### Deployment on OpenShift v3
 
-
 This application can be deployed on [OpenShift v3 container platfrom](https://www.openshift.org/index.html) which provides application management and scaling capabilities for Node.js apps
 
-In order to deploy this Node.js example, you either have to have a naccess to cloud hosted OpenShift v3 platfrom or use the [latest OpenShift Origin Vagrant box](https://www.openshift.org/vm/) to run OpenShift platform localy.
+In order to deploy this Node.js example, you either have to have an access to the cloud hosted OpenShift v3 platfrom or use the [latest OpenShift Origin Vagrant box](https://www.openshift.org/vm/) to run OpenShift platform localy.
 
-The instructions in this file asume that you are using latest OpenShift Origin Vagrant box running on your localhost (and will mostly work on any installation of OpenShift v3 platfrom).
+The instructions in this file asume that you are using latest OpenShift Origin Vagrant box and running it on your localhost.
 
-#### New project on OpenShift
+#### Login to OpenShift
 
-Once you have started the local OpenShift v3 platfrom and installed OpenShift v3 CLI tool (see the above section), given that local platfrom is open and running, you have to login with CLI tool
+Once you have started the local OpenShift v3 platfrom and installed [OpenShift v3 CLI tool](https://docs.openshift.org/latest/cli_reference/get_started_cli.html), given that local platfrom is open and running, you can now login
 
 	oc login https://10.2.2.2:8443
 	
-Upon succesfull login you should see the list of existing projects running on OpenShift.
+Upon succesfull login, you should see the list of existing projects on OpenShift platfrom.
 
-Next, we have to create the project for our application. You can do it by loging to UI pannel 
+#### Add Node.js Image Streams
 
-	https://10.2.2.2:8443 (default username / password are admin / admin)
+Next, we are going to replace the existing OpenShift Node.js image stream with the more up to date one which has support for most recent Node.js versions. We are using [origin-s2i-nodejs](https://github.com/ryanj/origin-s2i-nodejs) project for the replacement imagestreams
+
+	oc delete is/nodejs -n openshift ; oc create -n openshift -f https://raw.githubusercontent.com/ryanj/origin-s2i-nodejs/master/centos7-s2i-nodejs.json 
+
+#### New project on OpenShift
+
+Next, we will create to create the project for our application. 
+
+You can create one by logging into the OpenShift UI pannel and creating new project via UI
+
+	https://10.2.2.2:8443 (admin/admin)
 	
-and creating new project via UI or use CLI to create new project
+Or you can use CLI to create a new project
 
-	oc new-project project-service --display-name="project service nodejs" --description="Sample Node.js service with REST enpoints"
+	oc new-project project-service --display-name="project service REST" --description="RESTfull Projects service built in Node.js"
 	
-#### Deploy the application
+#### Deploy Node.js application
 
-In order to do first application deployment its best to use the OpenShift v3 application template.
+Next, we are using Node.js application template to deploy project service. 
+
+OpenShift templates are define the the structure and deppendencies for your application. As well as container monitoring and auto redeployment conditions (code change in version control for example). Templates are located under
+
+	/openshift/templates/nodejs-template.json
+
+We are going to create new application based on the template
+
+	oc new-app -f /path/to/nodejs-template.json
+	
+Check if deployments were started
+
+	oc get builds
+
+Manually start deployments if needed
+
+	oc start-build project-service --follow
+	
+
+
+
 
 
 
