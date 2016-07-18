@@ -58,7 +58,26 @@ Check if deployments were started
 Manually start deployments if needed
 
 	oc start-build project-service --follow
-	
+
+#### Add MongoDB to the project
+
+Next, we are going to add the MongoDB container to the project. We can do this manually, by pointing to the MongoDB docker image in DockerHub
+
+	oc new-app centos/mongodb-26-centos7 -e MONGODB_USER=admin,MONGODB_DATABASE=mongo_db,MONGODB_PASSWORD=secret,MONGODB_ADMIN_PASSWORD=super-secret
+
+Now, after deployment is finished, we have MongoDB container running on the specific internal IP within OpenShift cluster. To get this IP address you can use
+
+	oc status
+
+What's left is to provide the MongoDB details to our Node.js project service. First, list the currentlly available environment variables, then provide MONGO_URL environment variable to project-service
+
+	oc env pods --all --list
+	oc set env dc/project-service MONGO_URL='mongodb://admin:secret@172.30.120.32:27017/mongo_db' 
+
+Enjoy!
+
+Created by [@sauliuz](https://twitter.com/sauliuz)
+[More Node.js examples on OpenShift](https://github.com/openshift/nodejs-ex)
 
 
 
